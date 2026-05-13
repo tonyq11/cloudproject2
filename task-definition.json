@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "hotel-app-container",
-      "image": "REPLACE_ME",
+      "image": "236411226681.dkr.ecr.us-east-1.amazonaws.com/hotel-booking-app:latest",
       "essential": true,
 
       "portMappings": [
