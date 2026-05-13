@@ -19,6 +19,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -41,10 +43,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            CustomOAuth2SuccessHandler successHandler
+            CustomOAuth2SuccessHandler successHandler,
+            ObjectProvider<ClientRegistrationRepository> clientRegistrationRepositoryProvider
     ) throws Exception {
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        http = http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -70,9 +73,14 @@ public class SecurityConfig {
                 // Hotel mutation permissions
 
                 .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth2 -> oauth2.successHandler(successHandler))
-                .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter())));
+                );
+
+        // Configure OAuth2 login only when client registrations are available
+        if (clientRegistrationRepositoryProvider.getIfAvailable() != null) {
+            http = http.oauth2Login(oauth2 -> oauth2.successHandler(successHandler));
+        }
+
+        http = http.oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter())));
 
         return http.build();
 

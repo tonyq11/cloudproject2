@@ -25,6 +25,10 @@ jobs:
           distribution: temurin
           java-version: 25
 
+      - name: Run Unit Tests 
+        run: mvn test
+
+
       - name: Build project
         run: mvn clean package -DskipTests
 
