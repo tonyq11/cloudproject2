@@ -1,0 +1,75 @@
+{
+  "family": "hotel-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::236411226681:role/LabRole",
+  "taskRoleArn": "arn:aws:iam::236411226681:role/LabRole",
+  "containerDefinitions": [
+    {
+      "name": "hotel-app-container",
+      "image": "REPLACE_ME",
+      "essential": true,
+
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "8080"
+        },
+        {
+          "name": "MYSQL_HOST",
+          "value": "hotel-booking-db.c1dcfkzcgneq.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "SPRING_JPA_HIBERNATE_DDL_AUTO",
+          "value": "update"
+        }
+      ],
+
+      "secrets": [
+        {
+          "name": "EMAIL_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:EMAIL_PASSWORD::"
+        },
+        {
+          "name": "GOOGLE_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:GOOGLE_CLIENT_ID::"
+        },
+        {
+          "name": "GOOGLE_CLIENT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:GOOGLE_CLIENT_SECRET::"
+        },
+        {
+          "name": "JWT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:jwt_secret::"
+        },
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:username::"
+        },
+        {
+          "name": "SPRING_DATASOURCE_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:password::"
+        }
+      ],
+
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/hotel-task",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      }
+    }
+  ]
+}
