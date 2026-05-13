@@ -1,24 +1,20 @@
 {
-  "family": "hotel-task",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "512",
-  "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::236411226681:role/LabRole",
-  "taskRoleArn": "arn:aws:iam::236411226681:role/LabRole",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:236411226681:task-definition/hotel-task:3",
   "containerDefinitions": [
     {
       "name": "hotel-app-container",
       "image": "236411226681.dkr.ecr.us-east-1.amazonaws.com/hotel-booking-app:latest",
-      "essential": true,
-
+      "cpu": 0,
       "portMappings": [
         {
           "containerPort": 8080,
-          "protocol": "tcp"
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "name": "http-8080",
+          "appProtocol": "http"
         }
       ],
-
+      "essential": true,
       "environment": [
         {
           "name": "PORT",
@@ -33,7 +29,9 @@
           "value": "update"
         }
       ],
-
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
       "secrets": [
         {
           "name": "EMAIL_PASSWORD",
@@ -52,24 +50,84 @@
           "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:jwt_secret::"
         },
         {
-          "name": "SPRING_DATASOURCE_USERNAME",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:username::"
-        },
-        {
           "name": "SPRING_DATASOURCE_PASSWORD",
           "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:password::"
+        },
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:username::"
         }
       ],
-
+      "ulimits": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/hotel-task",
+          "awslogs-create-group": "true",
           "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs",
-          "awslogs-create-group": "true"
-        }
-      }
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
     }
-  ]
+  ],
+  "family": "hotel-task",
+  "taskRoleArn": "arn:aws:iam::236411226681:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::236411226681:role/LabRole",
+  "networkMode": "awsvpc",
+  "revision": 3,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "ecs.capability.secrets.asm.environment-variables"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE",
+    "MANAGED_INSTANCES"
+  ],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "registeredAt": "2026-05-13T09:48:54.626Z",
+  "registeredBy": "arn:aws:sts::236411226681:assumed-role/voclabs/user4788305=Tonyq",
+  "enableFaultInjection": false,
+  "tags": []
 }
