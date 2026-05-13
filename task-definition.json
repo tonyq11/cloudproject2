@@ -37,27 +37,27 @@
       "secrets": [
         {
           "name": "EMAIL_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:EMAIL_PASSWORD::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:EMAIL_PASSWORD::"
         },
         {
           "name": "GOOGLE_CLIENT_ID",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:GOOGLE_CLIENT_ID::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:GOOGLE_CLIENT_ID::"
         },
         {
           "name": "GOOGLE_CLIENT_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:GOOGLE_CLIENT_SECRET::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:GOOGLE_CLIENT_SECRET::"
         },
         {
           "name": "JWT_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:jwt_secret::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:jwt_secret::"
         },
         {
           "name": "SPRING_DATASOURCE_USERNAME",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:username::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:username::"
         },
         {
           "name": "SPRING_DATASOURCE_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin:password::"
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:236411226681:secret:rds-db-credentials/db-MQOBW4CSP7ABUQ3TCWU74ZGIJQ/admin/1777310780693-aEoz2I:password::"
         }
       ],
 
