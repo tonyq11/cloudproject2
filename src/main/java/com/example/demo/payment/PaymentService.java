@@ -65,6 +65,14 @@ public class PaymentService {
         return payment;
     }
 
+
+   
+
+
+
+
+
+
   // get payments for booking
     public List<Payment> getPaymentsForBooking(Long bookingId) {
         Optional<Booking> bookingOpt = bookingRepository.findById(bookingId);

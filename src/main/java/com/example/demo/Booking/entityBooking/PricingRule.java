@@ -1,4 +1,5 @@
 package com.example.demo.Booking.entityBooking;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +22,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-
 
 @Entity
 @Table(name = "pricing_rules")
@@ -48,7 +47,7 @@ public class PricingRule {
             name = "pricing_rule_months",
             joinColumns = @JoinColumn(name = "rule_id")
     )
-    @Column(name = "month")
+    @Column(name = "month_name")
     private Set<String> months = new HashSet<>();
 
     // Days relation
@@ -57,7 +56,7 @@ public class PricingRule {
             name = "pricing_rule_days",
             joinColumns = @JoinColumn(name = "rule_id")
     )
-    @Column(name = "day")
+    @Column(name = "day_name")
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeekEnum> days = new HashSet<>();
 }

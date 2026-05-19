@@ -1,35 +1,15 @@
 package com.example.demo.Booking.servicesBooking;
 
-import com.example.demo.Booking.bookingMapper.BookingMapper;
-import com.example.demo.Booking.bookingRepo.BookingRepository;
-import com.example.demo.Booking.filterBooking.BookingFilterRequest;
-import com.example.demo.Booking.dtoBooking.Booking.BookingResponse;
-import com.example.demo.Booking.dtoBooking.Booking.BookingSummary;
-import com.example.demo.Booking.dtoBooking.Booking.CancelBookingRequest;
-import com.example.demo.Booking.dtoBooking.Booking.CreateBookingRequest;
-import com.example.demo.Booking.dtoBooking.Booking.PayBookingRequest;
-import com.example.demo.Booking.entityBooking.Booking;
-import com.example.demo.Booking.entityBooking.BookingStatus;
-import com.example.demo.Booking.filterBooking.BookingSpec;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import com.example.demo.Booking.servicesBooking.CancellationPolicyService.PolicyResult;
-import com.example.demo.ExceptionHandler.BookingException;
-import com.example.demo.ExceptionHandler.ResourceNotFoundException;
-
-import com.example.demo.catalog.entity.Guest;
-import com.example.demo.catalog.entity.Room;
-import com.example.demo.catalog.repository.GuestRepository;
-import com.example.demo.catalog.repository.RoomRepository;
-import com.example.demo.payment.Payment;
-import com.example.demo.payment.PaymentMethod;
-import com.example.demo.payment.PaymentStatus;
-
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -38,14 +18,30 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.Booking.bookingMapper.BookingMapper;
+import com.example.demo.Booking.bookingRepo.BookingRepository;
+import com.example.demo.Booking.dtoBooking.Booking.BookingResponse;
+import com.example.demo.Booking.dtoBooking.Booking.BookingSummary;
+import com.example.demo.Booking.dtoBooking.Booking.CancelBookingRequest;
+import com.example.demo.Booking.dtoBooking.Booking.CreateBookingRequest;
+import com.example.demo.Booking.entityBooking.Booking;
+import com.example.demo.Booking.entityBooking.BookingStatus;
+import com.example.demo.Booking.filterBooking.BookingFilterRequest;
+import com.example.demo.Booking.filterBooking.BookingSpec;
+import com.example.demo.Booking.servicesBooking.CancellationPolicyService.PolicyResult;
+import com.example.demo.ExceptionHandler.BookingException;
+import com.example.demo.ExceptionHandler.ResourceNotFoundException;
+import com.example.demo.auth.notification.EmailService;
+import com.example.demo.catalog.entity.Guest;
+import com.example.demo.catalog.entity.Room;
+import com.example.demo.catalog.repository.GuestRepository;
+import com.example.demo.catalog.repository.RoomRepository;
+import com.example.demo.payment.Payment;
+import com.example.demo.payment.PaymentMethod;
+import com.example.demo.payment.PaymentStatus;
 
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
@@ -59,6 +55,7 @@ public class BookingService {
     private final CancellationPolicyService cancellationPolicyService;
     private final BookingMapper bookingMapper;
     private final BookingPricingFacade bookingPricingFacade;
+    private final EmailService emailService;
 
     // ─────────────────────────────────────────────────────────────────────────
     // CREATE BOOKING
@@ -136,8 +133,15 @@ public BookingResponse createBooking(CreateBookingRequest request) {
             .build();
 
     booking = bookingRepository.save(booking);
-
+     
     log.info("Booking {} created successfully", booking.getId());
+   
+            
+    emailService.sendEmail(
+            guest.getUser().getEmail(),
+            "Booking Created",
+            "Your booking has been created successfully. Booking ID: " + booking.getId()
+    );
 
     return bookingMapper.toResponse(booking);
 }
