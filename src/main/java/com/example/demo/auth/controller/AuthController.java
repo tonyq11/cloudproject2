@@ -33,9 +33,9 @@ public class AuthController {
     private final AuthServiceImpl authService;
 
     // ── Auth ──────────────────────────────────────────────────────────────────
-    @PostMapping("/login")
+    @PostMapping("/login")             
     @Operation(
-            summary = "Login user",
+            summary = "Login user",    
             description = "Authenticates a user with username and password and returns a JWT access token.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     required = true,
